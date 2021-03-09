@@ -5,21 +5,23 @@ Created on Fri Sep 19 14:08:39 2014
 
 @author: leendert
 """
-import sys
-from shell import Shell, CommandError
-
-import qdarkstyle
+from configparser import ConfigParser
 import os
+import sys
 
-from PySide import QtGui
+from shell import Shell, CommandError
+from PySide2 import QtGui
+import numpy as np
+try:
+    import qdarkstyle as _qdarkstyle
+except ImportError:
+    _has_qdarkstyle = False
+else:
+    _has_qdarkstyle = True
 
 from ui.MainWindowGUI import Ui_MainWindow
-
-import ConfigParser
-
-import numpy as np
-
 import utils.utilities as ut
+
 
 def setCheckBoxState(cb, b):
     if (cb.isChecked() and not b) or (not cb.isChecked() and b):
@@ -119,7 +121,7 @@ class BSG_UI(QtGui.QMainWindow):
         self.ui.dsb_dAc.valueChanged.connect(self.enforceMatrixElements)
         self.ui.dsb_lambda.valueChanged.connect(self.enforceMatrixElements)
 
-        self.ui.cb_nmeMethod.currentIndexChanged[unicode].connect(self.setESPVisibility)
+        self.ui.cb_nmeMethod.currentIndexChanged[str].connect(self.setESPVisibility)
 
         self.ui.b_resetSSO.clicked.connect(self.resetSpectrumShapeOptions)
         self.ui.b_resetNSO.clicked.connect(self.resetNuclearStructureOptions)
@@ -735,7 +737,8 @@ if __name__ == '__main__':
     mw = BSG_UI()
 
     # setup stylesheet
-    app.setStyleSheet(qdarkstyle.load_stylesheet_pyside())
+    if _has_qdarkstyle:
+        app.setStyleSheet(_qdarkstyle.load_stylesheet_pyside())
     mw.show()
     app.exec_()
 

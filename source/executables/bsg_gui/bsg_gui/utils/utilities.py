@@ -7,7 +7,7 @@ Created on Fri Sep  1 11:14:14 2017
 
 import numpy as np
 import logging
-import ConfigParser
+from configparser import ConfigParser
 
 ''' General variables and utility functions '''
 
