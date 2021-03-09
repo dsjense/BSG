@@ -5,7 +5,7 @@ Created on Fri Sep 19 14:08:39 2014
 
 @author: leendert
 """
-from configparser import ConfigParser
+import configparser
 import os
 import sys
 
@@ -194,7 +194,7 @@ class BSG_UI(QtGui.QMainWindow):
         if self.iniName == '':
             self.addUnsavedChanges("No information currently saved.")
         else:
-            config = ConfigParser.RawConfigParser(allow_no_value=True)
+            config = configparser.RawConfigParser(allow_no_value=True)
             config.read(self.iniName)
 
             if config.get('Transition', 'Process') != self.ui.cb_process.currentText():
@@ -208,12 +208,12 @@ class BSG_UI(QtGui.QMainWindow):
             try:
                 if config.getfloat('Transition', 'PartialHalflife') != self.ui.dsb_halflife.value():
                     self.addUnsavedChanges('Partial Halflife (Prev. %s)' % config.get('Transition', 'PartialHalflife'))
-            except ConfigParser.NoOptionError:
+            except configparser.NoOptionError:
                 pass
             try:
                 if config.getfloat('Transition', 'LogFt') != self.ui.dsb_logft.value():
                     self.addUnsavedChanges('Log Ft (Prev. %s)' % config.get('Transition', 'LogFt'))
-            except ConfigParser.NoOptionError:
+            except configparser.NoOptionError:
                 pass
 
             if config.getint('Mother', 'Z') != self.ui.sb_ZM.value():
@@ -613,7 +613,7 @@ class BSG_UI(QtGui.QMainWindow):
         if filename == '':
             return
         try:
-            config = ConfigParser.RawConfigParser(allow_no_value=True)
+            config = configparser.RawConfigParser(allow_no_value=True)
             config.read(filename)
 
             self.ui.cb_process.setCurrentIndex(self.ui.cb_process.findText(config.get('Transition', 'Process')))
@@ -638,15 +638,15 @@ class BSG_UI(QtGui.QMainWindow):
             self.ui.dsb_Beta6D.setValue(config.getfloat('Daughter', 'Beta6'))
             try:
                 self.ui.dsb_halflife.setValue(config.getfloat('Transition', 'PartialHalflife'))
-            except ConfigParser.NoOptionError:
+            except configparser.NoOptionError:
                 pass
             try:
                 self.ui.dsb_logft.setValue(config.getfloat('Transition', 'LogFt'))
-            except ConfigParser.NoOptionError:
+            except configparser.NoOptionError:
                 pass
             try:
                 self.setROBTDFile(config.get('Transition', 'ROBTDFile'))
-            except ConfigParser.NoOptionError:
+            except configparser.NoOptionError:
                 pass
             self.setCurrentIniFile(filename)
             self.setTransitionLabel()
@@ -674,7 +674,7 @@ class BSG_UI(QtGui.QMainWindow):
         if filename == '':
             return
 
-        config = ConfigParser.RawConfigParser()
+        config = configparser.RawConfigParser()
         config.read(filename)
 
         if nuclearStructure:
@@ -706,12 +706,12 @@ class BSG_UI(QtGui.QMainWindow):
                 setCheckBoxState(key, True)
                 try:
                     setCheckBoxState(key, config.getboolean('Spectrum', self.spectrumCheckBoxes[key]))
-                except (ConfigParser.NoSectionError, ConfigParser.NoOptionError):
+                except (configparser.NoSectionError, configparser.NoOptionError):
                     continue
             for key in self.spectrumDSB:
                 try:
                     key.setValue(config.getfloat('Spectrum', self.spectrumDSB[key]))
-                except (ConfigParser.NoSectionError, ConfigParser.NoOptionError):
+                except (configparser.NoSectionError, configparser.NoOptionError):
                     continue
             for key in self.spectrumNME:
                 key.setValue(0.)
@@ -719,13 +719,13 @@ class BSG_UI(QtGui.QMainWindow):
                 try:
                     key.setValue(config.getfloat('Spectrum', self.spectrumNME[key]))
                     setCheckBoxState(self.ui.cb_enforceNME, True)
-                except (ConfigParser.NoSectionError, ConfigParser.NoOptionError):
+                except (configparser.NoSectionError, configparser.NoOptionError):
                     continue
             for key in self.spectrumComboBoxes:
                 key.setCurrentIndex(0)
                 try:
                     key.setCurrentIndex(key.findText(config.get('Spectrum', self.spectrumComboBoxes[key])))
-                except (ConfigParser.NoSectionError, ConfigParser.NoOptionError):
+                except (configparser.NoSectionError, configparser.NoOptionError):
                     continue
 
         self.setCurrentConfigFile(filename)

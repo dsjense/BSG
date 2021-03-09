@@ -7,7 +7,7 @@ Created on Fri Sep  1 11:14:14 2017
 
 import numpy as np
 import logging
-from configparser import ConfigParser
+from configparser import RawConfigParser
 
 ''' General variables and utility functions '''
 
@@ -358,7 +358,7 @@ robtdFile=None, **kwargs):
 
     if not name:
         name = '%sZ%d_A%d_Q%.0f.ini' % (prefix, Zm, A, Q)
-    config = ConfigParser.RawConfigParser(allow_no_value=True)
+    config = RawConfigParser(allow_no_value=True)
     config.optionxform = str
     config.add_section('Transition')
     config.add_section('Mother')
@@ -389,13 +389,13 @@ robtdFile=None, **kwargs):
     config.set('Daughter', 'Beta6', beta6d)
     config.set('Daughter', 'SpinParity', dJpi)
     config.set('Daughter', 'ExcitationEnergy', dE)
-    with open(name, 'wb') as configFile:
+    with open(name, 'w') as configFile:
         config.write(configFile)
 
 def writeConfigFile(name, directory, computationalCheckBoxes, computationalComboBoxes,
 computationalDSB, constants, spectrumCheckBoxes, spectrumDSB, spectrumNME,
 enforceNME, spectrumComboBoxes):
-    config = ConfigParser.RawConfigParser(allow_no_value=True)
+    config = RawConfigParser(allow_no_value=True)
     config.optionxform = str
     config.add_section('Spectrum')
     config.add_section('General')
